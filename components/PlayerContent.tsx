@@ -35,21 +35,6 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const [isActive, setIsActive] = useState(false);
   const [time, setTime] = useState(0);
 
-  useEffect(() => {
-    let interval = null;
-
-    if (isActive) {
-      interval = setInterval(() => {
-        setTime((time) => time + 10);
-      }, 10);
-    } else {
-      clearInterval(interval || 0);
-    }
-    return () => {
-      clearInterval(interval || 0);
-    };
-  }, [isActive]);
-
   const Icon = isPlaying ? BsPauseFill : BsPlayFill
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave
 
@@ -93,6 +78,21 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     onpause: () => setIsPlaying(false),
     format: ["mp3"],
   })
+
+  useEffect(() => {
+    let interval = null;
+
+    if (isActive && duration) {
+      interval = setInterval(() => {
+        setTime((time) => time + 10);
+      }, 10);
+    } else {
+      clearInterval(interval || 0);
+    }
+    return () => {
+      clearInterval(interval || 0);
+    };
+  }, [isActive, duration]);
 
   useEffect(() => {
     sound?.play()
