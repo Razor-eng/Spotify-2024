@@ -3,7 +3,7 @@ export const getURL = () => {
   // if you change port - change it here as well
   let url =
     process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
+      ? "http://spotify-2024.vercel.app"
       : process.env.NEXT_PRODUCTION_URL ?? process.env.NEXT_PUBLIC_SITE_URL ?? process.env.NEXT_PUBLIC_VERCEL_URL
 
   url = url?.includes("http") ? url : `https://${url}`
