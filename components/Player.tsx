@@ -25,7 +25,7 @@ const Player = () => {
         shadow-lg
         w-full 
         py-2 
-        h-[20%]
+        h-fit
         md:h-[80px] 
         md:px-4
       ">
