@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import useSound from "use-sound"
@@ -18,10 +19,36 @@ interface PlayerContentProps {
   songUrl: string
 }
 
+function secondsToMinutesSeconds(duration: any) {
+
+  const min = Math.floor((duration / 1000 / 60) << 0);
+  const sec = Math.floor((duration / 1000) % 60);
+
+  return `${min < 10 ? "0" + min : min}:${sec < 10 ? "0" + sec : sec}`;
+}
+
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const player = usePlayer()
   const [volume, setVolume] = useState(1)
   const [isPlaying, setIsPlaying] = useState(false)
+
+  const [isActive, setIsActive] = useState(false);
+  const [time, setTime] = useState(0);
+
+  useEffect(() => {
+    let interval = null;
+
+    if (isActive) {
+      interval = setInterval(() => {
+        setTime((time) => time + 10);
+      }, 10);
+    } else {
+      clearInterval(interval || 0);
+    }
+    return () => {
+      clearInterval(interval || 0);
+    };
+  }, [isActive]);
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave
@@ -56,7 +83,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     player.setId(previousSong)
   }
 
-  const [play, { pause, sound }] = useSound(songUrl, {
+  const [play, { pause, sound, duration }] = useSound(songUrl, {
     volume: volume,
     onplay: () => setIsPlaying(true),
     onend: () => {
@@ -69,6 +96,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
   useEffect(() => {
     sound?.play()
+    setIsActive(true);
 
     return () => {
       sound?.unload()
@@ -78,8 +106,10 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const handlePlay = () => {
     if (!isPlaying) {
       play()
+      setIsActive(true);
     } else {
       pause()
+      setIsActive(false);
     }
   }
 
@@ -92,64 +122,42 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 h-full">
+    <div className="flex flex-col md:grid grid-cols-2 md:grid-cols-3 h-full relative">
       <div className="flex w-full justify-start">
-        <div className="flex items-center gap-x-4">
+        <div className="flex items-center md:justify-normal w-full md:w-auto justify-between gap-x-4">
           <MediaItem data={song} />
           <LikeButton songId={song.id} />
         </div>
       </div>
 
-      <div
-        className="
-            flex 
-            md:hidden 
-            col-auto 
-            w-full 
-            justify-end 
-            items-center
-          ">
-        <div
-          onClick={handlePlay}
-          className="
-              h-10
-              w-10
-              flex 
-              items-center 
-              justify-center 
-              rounded-full 
-              bg-white 
-              p-1 
-              cursor-pointer
-            ">
-          <Icon size={30} className="text-black" />
-        </div>
-      </div>
+      <div className="flex flex-col-reverse md:flex-col items-center gap-4 md:gap-3 m-auto">
 
-      <div
-        className="
-            hidden
+        <div
+          className="
             h-full
-            md:flex 
-            justify-center 
+            flex 
+            justify-between
+            px-10
+            md:px-0
+            md:justify-center 
             items-center 
             w-full 
             max-w-[722px] 
             gap-x-6
           ">
-        <AiFillStepBackward
-          onClick={onPlayPrevious}
-          size={30}
-          className="
+          <AiFillStepBackward
+            onClick={onPlayPrevious}
+            size={30}
+            className="
               text-neutral-400 
               cursor-pointer 
               hover:text-white 
               transition
             "
-        />
-        <div
-          onClick={handlePlay}
-          className="
+          />
+          <div
+            onClick={handlePlay}
+            className="
               flex 
               items-center 
               justify-center
@@ -160,18 +168,29 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
               p-1 
               cursor-pointer
             ">
-          <Icon size={30} className="text-black" />
-        </div>
-        <AiFillStepForward
-          onClick={onPlayNext}
-          size={30}
-          className="
+            <Icon size={30} className="text-black" />
+          </div>
+          <AiFillStepForward
+            onClick={onPlayNext}
+            size={30}
+            className="
               text-neutral-400 
               cursor-pointer 
               hover:text-white 
               transition
             "
-        />
+          />
+        </div>
+
+        <div className="flex items-center gap-5">
+          <p className="md:w-10 w-6 text-xs md:text-md">{secondsToMinutesSeconds(time)}</p>
+          <div className="w-[60vw] max-w-[500px] bg-gray-300 rounded-full cursor-pointer">
+            <div className="h-1 relative border-none w-0 bg-green-800 rounded-full" style={{ width: `${duration ? ((time / duration) * 100) : 0}%` }} >
+              <div className="absolute bg-white w-3 h-4 right-0 -top-2 rounded-full"></div>
+            </div>
+          </div>
+          <p className="md:w-10 w-6 text-xs md:text-md">{secondsToMinutesSeconds(duration)}</p>
+        </div>
       </div>
 
       <div className="hidden md:flex w-full justify-end pr-2">

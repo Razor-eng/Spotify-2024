@@ -8,6 +8,7 @@ import useUploadModal from "@/hooks/useUploadModal"
 import { Song } from "@/types"
 import MediaItem from "./MediaItem"
 import useOnPlay from "@/hooks/useOnPlay"
+import Hint from "./Hint"
 
 interface LibraryProps {
   songs: Song[]
@@ -35,11 +36,13 @@ const Library = ({ songs }: LibraryProps) => {
           <TbPlaylist className="text-neutral-400" size={26} />
           <p className="text-neutral-400 font-medium text-md">Your libray</p>
         </div>
-        <AiOutlinePlus
-          className="text-neutral-400 cursor-pointer hover:text-white transition"
-          onClick={onClick}
-          size={20}
-        />
+        <Hint label="Add a song">
+          <AiOutlinePlus
+            className="text-neutral-400 cursor-pointer hover:text-white transition"
+            onClick={onClick}
+            size={20}
+          />
+        </Hint>
       </div>
       <div className="flex flex-col gap-y-2 mt-4 px-3">
         {songs.map(song => (
