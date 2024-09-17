@@ -27,7 +27,7 @@ const Player = () => {
         py-2 
         h-[20%]
         md:h-[80px] 
-        px-4
+        md:px-4
       ">
       <PlayerContent key={songUrl} song={song} songUrl={songUrl} />
     </div>

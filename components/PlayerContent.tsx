@@ -123,15 +123,14 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
   return (
     <div className="flex flex-col md:grid grid-cols-2 md:grid-cols-3 h-full relative">
-      <div className="flex w-full justify-start">
+      <div className="flex flex-1 w-full justify-start">
         <div className="flex items-center md:justify-normal w-full md:w-auto justify-between gap-x-4">
           <MediaItem data={song} />
           <LikeButton songId={song.id} />
         </div>
       </div>
-
+      <hr className="w-screen my-2 bg-zinc-900 border-zinc-500 md:hidden" />
       <div className="flex flex-col-reverse md:flex-col items-center gap-4 md:gap-3 m-auto">
-
         <div
           className="
             h-full
@@ -183,7 +182,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
         </div>
 
         <div className="flex items-center gap-5">
-          <p className="md:w-10 w-6 mr-3 text-xs md:text-md">{secondsToMinutesSeconds(time)}</p>
+          <p className="md:w-10 w-6 mr-2 text-xs md:text-md">{secondsToMinutesSeconds(time)}</p>
           <div className="w-[60vw] max-w-[500px] bg-gray-300 rounded-full cursor-pointer">
             <div className="h-1 relative border-none w-0 bg-green-800 rounded-full" style={{ width: `${duration ? ((time / duration) * 100) : 0}%` }} >
               <div className="absolute bg-white w-3 h-4 right-0 -top-2 rounded-full"></div>
