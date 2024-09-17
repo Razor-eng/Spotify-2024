@@ -28,6 +28,7 @@ const Player = () => {
         h-fit
         md:h-[80px] 
         md:px-4
+        rounded-t-md
       ">
       <PlayerContent key={songUrl} song={song} songUrl={songUrl} />
     </div>
