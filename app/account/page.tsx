@@ -1,5 +1,4 @@
 import Header from "@/components/Header"
-import AccountContent from "./components/AccountContent"
 
 export default function Page() {
   return (
@@ -9,7 +8,6 @@ export default function Page() {
           <h1 className="text-white text-3xl font-semibold">Account Settings</h1>
         </div>
       </Header>
-      <AccountContent />
     </div>
   )
 }

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
-import { cookies, headers } from "next/headers"
+import { cookies } from "next/headers"
 
 import { Song } from "@/types"
 
