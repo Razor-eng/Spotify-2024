@@ -183,7 +183,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
         </div>
 
         <div className="flex items-center gap-5">
-          <p className="md:w-10 w-6 text-xs md:text-md">{secondsToMinutesSeconds(time)}</p>
+          <p className="md:w-10 w-6 mr-2 text-xs md:text-md">{secondsToMinutesSeconds(time)}</p>
           <div className="w-[60vw] max-w-[500px] bg-gray-300 rounded-full cursor-pointer">
             <div className="h-1 relative border-none w-0 bg-green-800 rounded-full" style={{ width: `${duration ? ((time / duration) * 100) : 0}%` }} >
               <div className="absolute bg-white w-3 h-4 right-0 -top-2 rounded-full"></div>
